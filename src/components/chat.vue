@@ -197,7 +197,7 @@ export default {
         this.$nextTick(_ => {
           this.fileTrigger = !this.fileTrigger
         })
-      })
+      },()=>{},'singleChat')
     },
     toChats (opt) {
       if (opt.groupid) {

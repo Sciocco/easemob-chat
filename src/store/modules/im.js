@@ -32,11 +32,12 @@ const IM_CHART_DIALOG = {
       console.info(message);
       console.info(state.groupMessageMap);
       Vue.set(state.groupMessageMap, groupId, chart)
-      // 如果收到的消息不属于当前用户 那么添加未读标记
       if(groupId == state.currentGroupId) {
+        // 如果收到的消息是当前用户 那么处理为已读
         Vue.set(message, 'isRead', true);
         Vue.set(message,'unread',"");
       }else{
+        // 如果收到的消息不属于当前用户 那么添加未读标记
         Vue.set(message, 'isRead', false);
         var count = (state.groupMessageMap[groupId] || []).filter(v => v.isRead === false).length
         count = count==0?"":count;

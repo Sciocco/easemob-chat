@@ -2,18 +2,18 @@ const state={
     global:{}
 };
 const getters = {   
-    global: (state)=> {
+    GLOBAL: (state)=> {
         return state.global;
     }
 };
 const mutations = {
-    m_global: (state,obj) => {
+    SET_GLOBAL: (state,obj) => {
         state.global = obj;
     }
 };
 const actions = {
-    a_global: (state,obj) => {
-        state.commit('m_global',obj);
+    GLOBAL: (state,obj) => {
+        state.commit('SET_GLOBAL',obj);
     }
 };
 export default {

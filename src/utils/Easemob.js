@@ -147,14 +147,18 @@ export const Easemob = class Easemob {
       },
       // 图片消息
       onPictureMessage(message) {
-        message = that.createClassNameAndTime(message)
-        message.fileType = 'image'
+        message = that.createClassNameAndTime(message);
+        message.fileType = 'image';
+        message = that.appendMessage(message, 'out');
         let type = dotData(message, 'type')
         if (type === 'groupchat') { // 群组消息
           message.groupId = message.to
           if (store.getters.GET_IM_CHART_DIALOG_GROUP_ID !== message.groupId || store.getters.GET_IM_CHART_DIALOG_VISIBLE === false) {
             message.isRead = false
           }
+          store.dispatch('PUSH_IM_CHART_DIALOG_GROUP_MESSAGE', message)
+        }else{
+          message.groupId = message.from
           store.dispatch('PUSH_IM_CHART_DIALOG_GROUP_MESSAGE', message)
         }
       },
@@ -301,13 +305,16 @@ export const Easemob = class Easemob {
    */
   sendGroupImageMessage(input, to, success = () => {
   }, fail = () => {
-  }, chatType = 'chatRoom') {
+  }, chatType = 'singleChat') {
+
     const conn = this.getConnection()
     const id = conn.getUniqueId() // 生成本地消息id
     let ImMessage = this.WebIM.message
     const msg = new ImMessage('img', id) // 创建图片消息
     // var input = document.getElementById('image')  // 选择图片的input
     const file = this.WebIM.utils.getFileUrl(input) // 将图片转化为二进制文件
+    var blob = input.files[0];
+    var url = window.URL.createObjectURL(blob);
     const allowType = {
       'jpg': true,
       'gif': true,
@@ -326,14 +333,16 @@ export const Easemob = class Easemob {
         onFileUploadError: () => { // 消息上传失败
           alert('图片发送失败')
           fail()
+          input.value = '';
         },
         onFileUploadComplete: (file) => { // 消息上传成功
+          console.log("上传成功");
           if (Array.isArray(file.entities)) {
             for (let v of file.entities) {
               let url = file.uri + '/' + v.uuid
               let temp = {
                 id,
-                type: 'chat',
+                type:'chat',
                 from: that.username,
                 to,
                 url,
@@ -344,6 +353,7 @@ export const Easemob = class Easemob {
               temp.fileType = 'image'
               store.dispatch('PUSH_IM_CHART_DIALOG_GROUP_MESSAGE', temp)
               success()
+              input.value = '';
             }
           }
         },

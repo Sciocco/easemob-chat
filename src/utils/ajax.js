@@ -1,6 +1,4 @@
 import axios from 'axios'
-
-// const baseUrl = 'http://192.168.10.59:8762'
 const urlPrefix = '/api'
 
 const instance = axios.create({
