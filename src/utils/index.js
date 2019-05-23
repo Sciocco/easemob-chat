@@ -1,6 +1,3 @@
-/**
- * Created by jiachenpan on 16/11/18.
- */
 import lodash from 'lodash'
 import $ from 'jquery'
 import { MessageBox, Notification } from 'element-ui'

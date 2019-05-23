@@ -134,6 +134,41 @@ export const Easemob = class Easemob {
           store.dispatch('PUSH_IM_CHART_DIALOG_GROUP_MESSAGE', message)
         }
       },
+      onEmojiMessage: (message) => {
+        console.log('Emoji');
+        message = that.createClassNameAndTime(message);
+        var data = message.data;
+        var tempData = "";
+        for (var i = 0, l = data.length; i < l; i++) {
+          let msg = data[i];
+          console.log(msg);
+          switch( msg.type.toLowerCase()) {
+            case "txt":
+              tempData += msg.data;
+            break;
+            case "emoji":
+              tempData +=`<img src='${msg.data}' />`
+            break;
+            default:
+              tempData += msg.data;
+            break;
+          }
+        }
+        message.data = tempData;
+        let type = dotData(message, 'type');
+        console.log("message =>");
+        console.info(message);
+        if (type === 'groupchat') { // 群组消息
+          message.groupId = message.to
+          if (store.getters.GET_IM_CHART_DIALOG_GROUP_ID !== message.groupId || store.getters.GET_IM_CHART_DIALOG_VISIBLE === false) {
+            message.isRead = false
+          }
+          store.dispatch('PUSH_IM_CHART_DIALOG_GROUP_MESSAGE', message)
+        } else {
+          message.groupId = message.from
+          store.dispatch('PUSH_IM_CHART_DIALOG_GROUP_MESSAGE', message)
+        }
+      },
       // 穿透消息
       onCmdMessage(message) {
         message.sourceMsg = '发起对话'
@@ -191,11 +226,6 @@ export const Easemob = class Easemob {
 
         that.WebIM.utils.download.call(that.getConnection(), options)
       },
-      onEmojiMessage: (message) => {
-        let data = message.data
-        for (let i = 0, l = data.length; i < l; i++) {
-        }
-      },
       onError(message) {
         that.handError(message)
       }
@@ -206,7 +236,7 @@ export const Easemob = class Easemob {
   // 处理报错
   handError(error) {
     let err = 'im报错：'
-    console.error(error)
+    console.error(error);
     alert(`   ${error.data.data}`,`error:${error.type}`)
   }
 

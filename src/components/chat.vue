@@ -96,7 +96,7 @@
 
 <script>
 import Viewer from '@/components/Viewer'
-import Easemob from '@/utils/Easemob'
+import Easemob from '@/utils/easemob'
 import {mapGetters} from 'vuex'
 export default {
   name: 'HelloWorld',

@@ -1,7 +1,3 @@
-/**
- * 纯判断验证器
- * Created by Administrator on 2017/3/3.
- */
 import lodash from 'lodash'
 import IDValidator from 'id-validator'
 import moment from 'moment'
