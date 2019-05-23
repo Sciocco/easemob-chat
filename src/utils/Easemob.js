@@ -115,11 +115,11 @@ export const Easemob = class Easemob {
       onTextMessage(message) {
         message = that.createClassNameAndTime(message)
         // 处理表情
-        if (typeof message.sourceMsg === 'string') {
-          Object.keys(that.config.emoConfig.map).forEach(v => {
-            message.data = message.sourceMsg = message.sourceMsg.replace(new RegExp(v, 'g'), `<img src="${that.config.emoConfig.path + that.config.emoConfig.map[v]}" />`)
-          })
-        }
+        // if (typeof message.sourceMsg === 'string') {
+        //   Object.keys(that.config.emoConfig.map).forEach(v => {
+        //     message.data = message.sourceMsg = message.sourceMsg.replace(new RegExp(v, 'g'), `<img src="${that.config.emoConfig.path + that.config.emoConfig.map[v]}" />`)
+        //   })
+        // }
         let type = dotData(message, 'type');
         console.log("message =>");
         console.info(message);
