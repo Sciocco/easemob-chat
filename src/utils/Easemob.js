@@ -52,6 +52,7 @@ export const Easemob = class Easemob {
   createClassNameAndTime(message, className = 'in') {
     message.className = className
     message.timeStr = message.timeStr || this._getTimeString()
+    message.timestamp = new Date().getTime()
     message.loginUserName = this.username;
     message.unread = null;
     message.lastMsg = null;

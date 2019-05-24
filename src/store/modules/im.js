@@ -25,6 +25,11 @@ const IM_CHART_DIALOG = {
     SET_IM_CHART_GROUPLIST(state, groupList) {
       state.groupList = groupList
     },
+    PUSH_IM_CHART_DIALOG_GROUP_MESSAGE(state, {message, groupId}) { //用户历史消息
+      let chart = state.groupMessageMap[groupId] || []
+      // 消息按时间排序
+      
+    },
     PUSH_IM_CHART_DIALOG_GROUP_MESSAGE(state, {message, groupId}) { // 用户聊天信息
       let chart = state.groupMessageMap[groupId] || []
       chart.push(message)
