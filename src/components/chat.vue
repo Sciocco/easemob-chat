@@ -18,6 +18,9 @@
                         <el-badge :value="roster.unread" class="item">
                           <el-button type="info" :class="(roster.name=='')?'':''"  size="small">{{roster.name}}</el-button>
                         </el-badge>
+                        <div>
+                          <span v-if="roster.lastMsg" v-html="roster.lastMsg.sourceMsg"></span>
+                        </div>
                         </li>
                     </ul>
                   </div>

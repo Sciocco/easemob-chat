@@ -52,7 +52,9 @@ export const Easemob = class Easemob {
   createClassNameAndTime(message, className = 'in') {
     message.className = className
     message.timeStr = message.timeStr || this._getTimeString()
-    message.loginUserName = this.username
+    message.loginUserName = this.username;
+    message.unread = null;
+    message.lastMsg = null;
     return message
   }
 
@@ -113,16 +115,11 @@ export const Easemob = class Easemob {
       },
       // 文本消息
       onTextMessage(message) {
-        message = that.createClassNameAndTime(message)
-        // 处理表情
-        // if (typeof message.sourceMsg === 'string') {
-        //   Object.keys(that.config.emoConfig.map).forEach(v => {
-        //     message.data = message.sourceMsg = message.sourceMsg.replace(new RegExp(v, 'g'), `<img src="${that.config.emoConfig.path + that.config.emoConfig.map[v]}" />`)
-        //   })
-        // }
-        let type = dotData(message, 'type');
         console.log("message =>");
         console.info(message);
+        message = that.createClassNameAndTime(message);
+        message.fileType = 'txt'
+        let type = dotData(message, 'type');
         if (type === 'groupchat') { // 群组消息
           message.groupId = message.to
           if (store.getters.GET_IM_CHART_DIALOG_GROUP_ID !== message.groupId || store.getters.GET_IM_CHART_DIALOG_VISIBLE === false) {
@@ -135,8 +132,10 @@ export const Easemob = class Easemob {
         }
       },
       onEmojiMessage: (message) => {
-        console.log('Emoji');
+        console.log('Emoji ');
+        console.info(message);
         message = that.createClassNameAndTime(message);
+        message.fileType = 'html';
         var data = message.data;
         var tempData = "";
         for (var i = 0, l = data.length; i < l; i++) {
@@ -154,10 +153,8 @@ export const Easemob = class Easemob {
             break;
           }
         }
-        message.data = tempData;
+        message.sourceMsg = tempData;
         let type = dotData(message, 'type');
-        console.log("message =>");
-        console.info(message);
         if (type === 'groupchat') { // 群组消息
           message.groupId = message.to
           if (store.getters.GET_IM_CHART_DIALOG_GROUP_ID !== message.groupId || store.getters.GET_IM_CHART_DIALOG_VISIBLE === false) {
@@ -183,8 +180,8 @@ export const Easemob = class Easemob {
       // 图片消息
       onPictureMessage(message) {
         message = that.createClassNameAndTime(message);
-        message.fileType = 'image';
-        message = that.appendMessage(message, 'out');
+        message = that.appendMessage(message, '');
+        message.fileType = 'image'
         let type = dotData(message, 'type')
         if (type === 'groupchat') { // 群组消息
           message.groupId = message.to
@@ -235,7 +232,7 @@ export const Easemob = class Easemob {
 
   // 处理报错
   handError(error) {
-    let err = 'im报错：'
+    let err = 'im报错'
     console.error(error);
     alert(`   ${error.data.data}`,`error:${error.type}`)
   }

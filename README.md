@@ -1,12 +1,8 @@
 # vue-chat demo \ 环信easemob
-
-> A Vue.js project
-> vuex管理聊天信息
-![示例图片](https://raw.githubusercontent.com/DarkSide7H/vue-chat/master/%E5%9B%BE%E7%89%87.png)
-
 ## easemob 
-AppKey:1106190415055331#test
 ## 测试用户: 
+chennan1 123456
+chennan2 123456
 test1 123456
 test2 123456
 test3 123456

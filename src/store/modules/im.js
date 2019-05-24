@@ -45,6 +45,7 @@ const IM_CHART_DIALOG = {
           {
             if(roster.name == groupId) {
               Vue.set(roster,'unread',count);
+              Vue.set(roster,"lastMsg",message);
             }
           });
       }
