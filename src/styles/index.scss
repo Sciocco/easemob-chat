@@ -3,6 +3,7 @@
 
 body {
   height: 100%;
+  margin:0px;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -131,9 +132,7 @@ code {
   position: relative;
 }
 
-.pagination-container {
-  margin-top: 30px;
-}
+
 
 .text-center {
   text-align: center

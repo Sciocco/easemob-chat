@@ -1,45 +1,38 @@
 <template>
-  <el-container>
-    <el-header>Header</el-header>
-    <el-container>
-      <el-aside width="200px">Aside</el-aside>
-      <el-container>
-        <el-main>
+      <el-container style="height: 100%;">
+        <el-main class="chat-main">
           <div class="friend-list">
-            <el-row style="height: 100%;">
-              <el-col :span="4" style="height: 100%;">
+            <el-row  style="height: 100%;">
+              <el-col :span="4" class= "row">
                 <el-card class="chatting-roster-content">
+                  <span class="title"><i class="el-icon-s-custom"></i>好友</span>
                   <div class="chatting-roster-group-list">
-                    <span class="title"><i class="el-icon-s-custom"></i>好友</span>
-                    <ul>
-                      <li class="friend-item" v-for="(roster, index) in rosterList" :key="index" @click="toChats(roster)">
-                        
+                    <ul >
+                      <li class="friend-item"  v-for="(roster, index) in rosterList" :key="index" :style="{background:(imTo.toName == roster.name)?'#3a3f45':''}" @click="toChats(roster)">
                         <!--未读消息数 -->
-                        <el-badge :value="roster.unread" class="item">
-                          <el-button type="info" :class="(roster.name=='')?'':''"  size="small">{{roster.name}}</el-button>
-                        </el-badge>
+                        <el-badge :value="roster.unread" >
+                        <div class="friend-name">
+                        <i class="el-icon-s-comment"></i>
                         <div>
+                          <div class="item" type="info" :class="(roster.name=='')?'':''"  size="small">{{roster.name}}</div>
+                        </div>
+                        </div>
+                        <div class="msg">
                           <span v-if="roster.lastMsg" v-html="roster.lastMsg.sourceMsg"></span>
                         </div>
-                        </li>
-                    </ul>
-                  </div>
-                  <div class="chatting-roster-group-list">
-                    <span class="title">群组</span>
-                    <ul>
-                      <li v-for="(group, index) in groupList" :key="index" @click="toChats(group)"> {{group.groupname}}</li>
+                        </el-badge>
+                      </li>
                     </ul>
                   </div>
                 </el-card>
               </el-col>
               <!-- 聊天信息 -->
-              <el-col :span="20">
-                <el-row>
-                  <el-col :span="24">
-                    <div style="width: 100%; text-align: center;">
-                      <span style="font-weight: 400">聊天目标 :  <span style="color: blue"> {{imTo.toName}} </span></span>
+              <el-col :span="20" class="chatting-main">
+                    <div class="chatting-title">
+                      <span style="font-size:25px;"> {{imTo.toName}} </span>
                     </div>
                     <el-scrollbar v-on:scroll.native="scrollHandler"  ref="chattingContent" class="chatting-content">
+   
                       <div v-for="(item, index) in charts" :key="index" >
                         <div v-if="item.from" class="chatting-item clearfix" :class="item.className">
                           <div class="msg-date">
@@ -65,40 +58,39 @@
                           </div>
                         </div>
                       </div>
+                     
                     </el-scrollbar>
-                  </el-col>
-                </el-row>
                 <!-- 输入区域 -->
-                <el-row>
-                  <el-col :span="20">
-                    <div class="chatting-input">
-                      <el-input type="textarea" @keyup.enter.native="sendMessage" ref="textarea" v-model.trim="txt"></el-input>
-                    </div>
-                  </el-col>
-                  <el-col :span="2" style="text-align: center">
-                    <label class="chatting-btn-file">
-                      <input :disabled="!imTo.toName" @change="sendImageMessage($event)" ref="imageInput"
-                             type="file"
-                             multiple="false">
-                      <el-button :disabled="!imTo.toName" type="success" style="margin-top: 5px;">上传图片</el-button>
-                    </label>
-                  </el-col>
-                  <el-col :span="2" style="text-align: center">
-                    <el-button type="success" style="margin-top: 5px;" @click="sendMessage" :disabled="!imTo.toName">发送</el-button>
-                  </el-col>
-                </el-row>
+                <div v-if="!!imTo.toName" class="chatting-input">
+                  <el-row>
+                    <el-col :span="2" >
+                      <label class="chatting-btn-file">
+                        <input @change="sendImageMessage($event)" ref="imageInput"
+                              type="file"
+                              multiple="false">
+                        <i style="font-size:30px;" class="el-icon-folder-add"></i>
+                      </label>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-row :span="20" class="left">
+                        <el-input type="textarea" @keyup.enter.native="sendMessage" ref="textarea" v-model.trim="txt"></el-input>
+                    </el-row>
+                    <el-row :span="4" class="left">
+                      <span>按Enter键快送发送!</span>
+                      <el-button style="width:120px;" @click="sendMessage">发送</el-button>
+                    </el-row>
+                  </el-row>
+                </div>
               </el-col>
             </el-row>
           </div>
         </el-main>
-        <el-footer>Footer</el-footer>
-      </el-container>
-    </el-container>
-  </el-container>
+      </el-container> 
 </template>
 
 <script>
-import Viewer from '@/components/Viewer'
+import Viewer from '@/components/viewer'
 import Easemob from '@/utils/easemob'
 import {mapGetters} from 'vuex'
 export default {
@@ -178,8 +170,9 @@ export default {
     sendMessage () {
       if (this.imTo.chatType === 'single') {
         // 会话
+        // this.imTo.toId = "chennan1";   //test  给陌生人发消息
         this.im.sendTextMessage(this.txt, this.imTo.toId, () => {
-          this.txt = ''
+        this.txt = ''
         })
       } else {
         // 组
@@ -230,25 +223,9 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  .el-header, .el-footer {
-    background-color: #B3C0D1;
-    color: #333;
-    text-align: center;
-    line-height: 60px;
-  }
-
-  .el-aside {
-    background-color: #D3DCE6;
-    color: #333;
-    text-align: center;
-    line-height: 200px;
-  }
-
-  .el-main {
-    background-color: #E9EEF3;
-    color: #333;
-    text-align: center;
-  }
+<style lang="scss">
 
 </style>
+
+
+

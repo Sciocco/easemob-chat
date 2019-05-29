@@ -1,5 +1,5 @@
 import store from '@/store'
-import {alert, dotData} from '@/utils'
+import {alert, confirm, dotData} from '@/utils'
 import moment from 'moment'
 
 export const Easemob = class Easemob {
@@ -88,9 +88,21 @@ export const Easemob = class Easemob {
     const that = this
 
     this.connection.listen({
+      onPresence(message) {
+        console.log(message);
+        console.info(message);
+        //对方收到请求加为好友
+        if(message.type == subscribe) {
+          confirm(`${message.from}请求加好友`).then(()=>{
+            console.log(1);
+          })
+          .catch(() => {
+            console.log(2);
+          });  
+        }
+      },  
       onOpened(message) {
         that.username = username
-
         // 获取好友
         this.getRoster({
           success: roster => {
@@ -399,6 +411,14 @@ export const Easemob = class Easemob {
       alert('只支持：' + allowType.join(',') + '的图片格式')
     }
   }
+  // 添加好友
+ addFriends(username) {
+    const conn = this.getConnection()
+    conn.subscribe({
+        to: username,
+        message: '加个好友呗!'   
+    });
+  } ;
 }
 
 export default Easemob

@@ -1,5 +1,4 @@
 import lodash from 'lodash'
-import $ from 'jquery'
 import { MessageBox, Notification } from 'element-ui'
 
 export function parseTime(time, cFormat) {
@@ -319,6 +318,7 @@ export function alert(message, title = '提示', type = 'error') {
   })
 }
 
+
 /**
  * @author 封装 element-ui confirm
  * @param text
@@ -627,33 +627,6 @@ export function validateLODOP(LODOP) {
     })
   }
   return false
-}
-
-//  blockUI, unblockUI
-// 异步获取打印插件
-export function getLodop() {
-  return new Promise((resolve, reject) => {
-    $.ajax({
-      url: 'http://localhost:8000/CLodopfuncs.js',
-      dataType: 'script',
-      cache: true
-    }).done((script, textStatus) => {
-      resolve(window.getCLodop())
-    }).fail((jqxhr, settings, exception) => {
-      $.ajax({
-        url: 'http://localhost:18000/CLodopfuncs.js',
-        dataType: 'script',
-        cache: true
-      }).done((script, textStatus) => {
-        resolve(window.getCLodop())
-      }).fail((jqxhr, settings, exception) => {
-        resolve(null)
-      })
-    })
-  }).then(reuslt => {
-    validateLODOP(reuslt)
-    return reuslt
-  })
 }
 
 // 数据树有子节点就回掉callback
